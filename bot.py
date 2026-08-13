@@ -1,7 +1,25 @@
+import os
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
 import discord
 from discord.ext import commands
 import datetime
-import os
+
+# --- Tiny web server to satisfy Render's Web Service port requirement ---
+class SimpleHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Adios Mijo bot is alive!")
+
+def run_server():
+    port = int(os.environ.get("PORT", 10000))
+    server = HTTPServer(("0.0.0.0", port), SimpleHandler)
+    server.serve_forever()
+
+# Start the web server in the background
+threading.Thread(target=run_server, daemon=True).start()
+# -----------------------------------------------------------------------
 
 intents = discord.Intents.default()
 intents.members = True
@@ -48,5 +66,4 @@ async def inactive(ctx, days: int = 120):
     for chunk in chunks:
         await ctx.send("\n".join(chunk))
 
-# Safely load the token from Render's hidden environment variables
-bot.run(os.environ.get("DISCORD_TOKEN"))
+bot.run("MTUzNzUzODIwMDU2ODg1Njc0OQ.GnLYZZ.m-W_I3xvOuKOk4cF7cl5tz-uLbhh2oJlFWdc54")
