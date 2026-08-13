@@ -66,4 +66,4 @@ async def inactive(ctx, days: int = 120):
     for chunk in chunks:
         await ctx.send("\n".join(chunk))
 
-bot.run("MTUzNzUzODIwMDU2ODg1Njc0OQ.GnLYZZ.m-W_I3xvOuKOk4cF7cl5tz-uLbhh2oJlFWdc54")
+bot.run(os.environ.get("DISCORD_TOKEN"))
